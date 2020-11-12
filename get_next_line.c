@@ -6,7 +6,7 @@
 /*   By: sabra <sabra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 19:37:52 by sabra             #+#    #+#             */
-/*   Updated: 2020/11/12 18:20:27 by sabra            ###   ########.fr       */
+/*   Updated: 2020/11/12 18:32:50 by sabra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,27 +55,6 @@ char	*cont_check(char *container, char *line)
 	return (line);
 }
 
-char	*ft_convert_to_cont(int fd, char *line)
-{
-	static char 		*container[1001];
-	char				buff[BUFF_SIZE];
-	int					len;
-
-	//line = cont_check(container[fd], line);
-	while (read(fd, buff, BUFF_SIZE))
-	{
-		if ((len = ft_strchr(buff, '\n')))
-		{
-			line = ft_strndup(buff, len);
-			container[fd] = ft_substr(buff, len + 1, BUFF_SIZE);
-			printf("%s", container[fd]);
-			return (line);
-		}
-		line = ft_strjoin(line, buff);
-	}
-	return (line);
-}
-
 int		get_next_line(int fd, char **line)
 {
 	static char 		*container[1001];
@@ -83,7 +62,7 @@ int		get_next_line(int fd, char **line)
 	int					len;
 	int					count;
 
-	*line = cont_check(container[fd], *line);
+	//*line = cont_check(container[fd], *line);
 	if (fd < 0 || !line || BUFF_SIZE <= 0)
 		return (-1);
 	if (!(buff = malloc(sizeof(char) * (BUFF_SIZE + 1))))
@@ -93,8 +72,8 @@ int		get_next_line(int fd, char **line)
 		if ((len = ft_strchr(buff, '\n')))
 		{
 			*line = ft_strndup(buff, len);
-			container[fd] = ft_substr(buff, len + 1, BUFF_SIZE - 1);
-			//printf("%s", container[fd]);
+			container[fd] = ft_substr(buff, len + 1, BUFF_SIZE);
+			printf("%s", container[fd]);
 			return (1);
 		}
 		*line = ft_strjoin(*line, buff);
@@ -115,7 +94,7 @@ int	main(void)
 	fd = open("text.txt", O_RDONLY);
 	get_next_line(fd, line);
 	
-	printf("%s", *line);
+	//printf("%s", *line);
 	// get_next_line(fd, line);
 	// printf("%s", *line);
 }
