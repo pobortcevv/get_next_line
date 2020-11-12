@@ -6,7 +6,7 @@
 /*   By: sabra <sabra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 19:37:52 by sabra             #+#    #+#             */
-/*   Updated: 2020/11/11 19:30:07 by sabra            ###   ########.fr       */
+/*   Updated: 2020/11/12 18:20:27 by sabra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,26 +37,72 @@ size_t	ft_strlen(const char *str)
 	return (i);
 }
 
+char	*cont_check(char *container, char *line)
+{
+	int len;
+
+	if (ft_strlen(container))
+	{
+		if ((len = ft_strchr(container, '\n')))
+		{
+			line = ft_strndup(container, len);
+			container = ft_substr(container, len + 1, ft_strlen(container));
+			return (line);
+		}
+		line = ft_strndup(container, ft_strlen(container));
+		free(container);
+	}
+	return (line);
+}
+
+char	*ft_convert_to_cont(int fd, char *line)
+{
+	static char 		*container[1001];
+	char				buff[BUFF_SIZE];
+	int					len;
+
+	//line = cont_check(container[fd], line);
+	while (read(fd, buff, BUFF_SIZE))
+	{
+		if ((len = ft_strchr(buff, '\n')))
+		{
+			line = ft_strndup(buff, len);
+			container[fd] = ft_substr(buff, len + 1, BUFF_SIZE);
+			printf("%s", container[fd]);
+			return (line);
+		}
+		line = ft_strjoin(line, buff);
+	}
+	return (line);
+}
+
 int		get_next_line(int fd, char **line)
 {
-	char 		*container[1000];
-	int 		len;
-	int			end;
-	char		*buff;
-	char		*sub;
+	static char 		*container[1001];
+	char				*buff;
+	int					len;
+	int					count;
 
-	if (ft_strlen(buff) == 0)
-		*line = ft_strnew(1);
-	while ((len = read(fd, buff, BUFF_SIZE)))
+	*line = cont_check(container[fd], *line);
+	if (fd < 0 || !line || BUFF_SIZE <= 0)
+		return (-1);
+	if (!(buff = malloc(sizeof(char) * (BUFF_SIZE + 1))))
+		return (-1);
+	while ((count = read(fd, buff, BUFF_SIZE)))
 	{
-		if ((end = ft_strchr(buff, '\0')))
+		if ((len = ft_strchr(buff, '\n')))
 		{
-			sub = ft_substr(buff, 0, end);
-			*line = ft_strjoin(*line, sub);
-			buff[fd] = ft_substr(buff, end + 1, len - end);
+			*line = ft_strndup(buff, len);
+			container[fd] = ft_substr(buff, len + 1, BUFF_SIZE - 1);
+			//printf("%s", container[fd]);
 			return (1);
 		}
 		*line = ft_strjoin(*line, buff);
+	}
+	if (count == -1)
+	{
+		free(buff);
+		return (-1);
 	}
 	return (0);
 }
@@ -68,5 +114,8 @@ int	main(void)
 
 	fd = open("text.txt", O_RDONLY);
 	get_next_line(fd, line);
+	
 	printf("%s", *line);
+	// get_next_line(fd, line);
+	// printf("%s", *line);
 }
