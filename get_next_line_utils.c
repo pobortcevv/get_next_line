@@ -6,7 +6,7 @@
 /*   By: sabra <sabra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 14:36:59 by sabra             #+#    #+#             */
-/*   Updated: 2020/11/12 17:48:14 by sabra            ###   ########.fr       */
+/*   Updated: 2020/11/13 23:30:22 by sabra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char	*ft_strndup(char *src, int index)
 	char	*dest;
 	int 	i;
 
-	dest = (char *)malloc(sizeof(char) * (ft_strlen(src) + 1));
+	dest = (char *)malloc(sizeof(char) * index);
 	if (dest == NULL)
 		return (0);
 	i = 0;
@@ -30,7 +30,7 @@ char	*ft_strndup(char *src, int index)
 	return (dest);
 }
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+char	*ft_substr(char *s, unsigned int start, size_t len)
 {
 	size_t	i;
 	char	*substr;
@@ -44,9 +44,8 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		substr[0] = '\0';
 		return (substr);
 	}
-	if (!(substr = (char *)malloc(sizeof(char) * (len + 1))))
+	if (!(substr = (char *)malloc((sizeof(char) * len) + 1)))
 		return (NULL);
-	string = (char *)s;
 	i = 0;
 	while (len-- && string[start])
 	{
@@ -82,7 +81,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	int		end_1;
 	int		i;
 
-	if (!s1)
+	if (!s1 || ft_strlen(s1) == 0)
 		return ((char *)s2);
 	result = (char *)malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
 	if (!result)
