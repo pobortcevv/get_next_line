@@ -6,7 +6,7 @@
 /*   By: sabra <sabra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 14:36:59 by sabra             #+#    #+#             */
-/*   Updated: 2020/11/13 23:30:22 by sabra            ###   ########.fr       */
+/*   Updated: 2020/11/14 21:37:51 by sabra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ char	*ft_substr(char *s, unsigned int start, size_t len)
 {
 	size_t	i;
 	char	*substr;
-	char	*string;
 
 	if (!s)
 		return (NULL);
@@ -44,12 +43,12 @@ char	*ft_substr(char *s, unsigned int start, size_t len)
 		substr[0] = '\0';
 		return (substr);
 	}
-	if (!(substr = (char *)malloc((sizeof(char) * len) + 1)))
+	if (!(substr = (char *)malloc((sizeof(char) * (len + 1)))))
 		return (NULL);
 	i = 0;
-	while (len-- && string[start])
+	while (len-- && s[start])
 	{
-		substr[i] = string[start];
+		substr[i] = s[start];
 		i++;
 		start++;
 	}
@@ -83,7 +82,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 
 	if (!s1 || ft_strlen(s1) == 0)
 		return ((char *)s2);
-	result = (char *)malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
+	result = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (!result)
 		return (NULL);
 	end_1 = 0;
@@ -93,7 +92,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		result[end_1] = s1[end_1];
 		end_1++;
 	}
-	while (s2[i])
+	while (s2[i] != '\n' && s2[i] != '\0')
 	{
 		result[end_1] = s2[i];
 		i++;
