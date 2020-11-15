@@ -6,7 +6,7 @@
 /*   By: sabra <sabra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 19:37:52 by sabra             #+#    #+#             */
-/*   Updated: 2020/11/14 21:44:04 by sabra            ###   ########.fr       */
+/*   Updated: 2020/11/15 10:56:23 by sabra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,15 @@ size_t	ft_strlen(const char *str)
 
 char		*cont_check(char *container, char *line)
 {
-	int		len;
-	char	*buff;
-
+	char	*len;
 
 	if (container)
 	{
-		buff = container;
 		if ((len = ft_strchr(container, '\n')))
 		{
-			container = ft_substr(buff, len + 1, ft_strlen(buff));
-			line = ft_strjoin(line, buff);
+			line = ft_strjoin(line, container);
+			len++;
+			container = ft_strjoin(container, len);
 			return (line);
 		}
 		line = ft_strjoin(line, container);
@@ -50,7 +48,7 @@ int		get_next_line(int fd, char **line)
 {
 	static char 		*container[1000];
 	char				*buff;
-	int					len;
+	char				*len;
 	int					count;
 
 	if (fd < 0 || !line || BUFF_SIZE <= 0)
@@ -63,9 +61,8 @@ int		get_next_line(int fd, char **line)
 		buff[count] = '\0';
 		if ((len = ft_strchr(buff, '\n')))
 		{
-			container[fd] = ft_substr(buff, len + 1, count);
-			buff = ft_substr(buff, 0, len);
-			//printf("\n\n!!%s!!\n\n", container[fd]);
+			len++;
+			container[fd] = ft_strjoin(container[fd], len);
 			*line = ft_strjoin(*line, buff);
 			free(buff);
 			return (1);
@@ -76,24 +73,22 @@ int		get_next_line(int fd, char **line)
 	return (0);
 }
 
-// int	main(void)
-// {
-// 	int fd = open("text.txt", O_RDONLY);
+int	main(void)
+{
+	int fd = open("text.txt", O_RDONLY);
 	
-// 	char *line;
-// 	int i;
+	char *line;
+	int i;
 
-// 	while ((i = get_next_line(fd, &line)))
-// 	{
-// 		printf("i = %d\n%s\n", i, line);
-// 		//free(line);
-// 	}
-// 	printf("i = %d\n%s\n", i, line);
-// 	//free(line);
-// 	return (0);
-	
-
-
+	while ((i = get_next_line(fd, &line)))
+	{
+		printf("i = %d\n%s\n", i, line);
+		//free(line);
+	}
+	printf("i = %d\n%s\n", i, line);
+	//free(line);
+	return (0);
+}
 
 
 
@@ -101,13 +96,15 @@ int		get_next_line(int fd, char **line)
 
 
 
-// 	// get_next_line(fd, line);
 
-// 	// printf("%s\n", *line);
-// 	// get_next_line(fd, line);
-// 	// printf("%s\n", *line);
-// 	// get_next_line(fd, line);
-// 	// printf("%s\n", *line);
-// 	// get_next_line(fd, line);
-// 	// printf("%s\n", *line);
+
+// 	get_next_line(fd, line);
+
+// 	printf("%s\n", *line);
+// 	get_next_line(fd, line);
+// 	printf("%s\n", *line);
+// 	get_next_line(fd, line);
+// 	printf("%s\n", *line);
+// 	get_next_line(fd, line);
+// 	printf("%s\n", *line);
 // }

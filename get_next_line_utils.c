@@ -6,7 +6,7 @@
 /*   By: sabra <sabra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 14:36:59 by sabra             #+#    #+#             */
-/*   Updated: 2020/11/14 21:37:51 by sabra            ###   ########.fr       */
+/*   Updated: 2020/11/15 10:55:55 by sabra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ char	*ft_substr(char *s, unsigned int start, size_t len)
 	return (substr);
 }
 
-int		ft_strchr(const char *s, int c)
+char	*ft_strchr(const char *s, int c)
 {
 	size_t		i;
 	char		*str;
@@ -67,21 +67,24 @@ int		ft_strchr(const char *s, int c)
 	{
 		if (str[i] == (char)c)
 		{
-			return (i);
+			return (&str[i]);
 		}
 		i++;
 	}
-	return (-1);
+	return (NULL);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char *s1, char *s2)
 {
 	char	*result;
 	int		end_1;
 	int		i;
 
-	if (!s1 || ft_strlen(s1) == 0)
-		return ((char *)s2);
+	if (!s1)
+	{
+		s1 = (char *)malloc(sizeof(char) * 1);
+		s1[0] = '\0';
+	}
 	result = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (!result)
 		return (NULL);
