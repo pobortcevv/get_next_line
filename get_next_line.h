@@ -6,7 +6,7 @@
 /*   By: sabra <sabra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 20:12:29 by sabra             #+#    #+#             */
-/*   Updated: 2020/11/15 10:46:02 by sabra            ###   ########.fr       */
+/*   Updated: 2020/11/16 20:04:07 by sabra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,6 @@ int		get_next_line(int fd, char **line);
 size_t	ft_strlen(const char *str);
 char	*ft_strjoin(char *s1, char *s2);
 char	*ft_strchr(const char *s, int c);
+char	*ft_strrchr(char *str, int c);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: sabra <sabra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 19:37:52 by sabra             #+#    #+#             */
-/*   Updated: 2020/11/15 10:56:23 by sabra            ###   ########.fr       */
+/*   Updated: 2020/11/16 22:23:42 by sabra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char		*cont_check(char *container, char *line)
 
 	if (container)
 	{
-		if ((len = ft_strchr(container, '\n')))
+		if ((len = ft_strrchr(container, '\n')))
 		{
 			line = ft_strjoin(line, container);
 			len++;
@@ -39,7 +39,7 @@ char		*cont_check(char *container, char *line)
 			return (line);
 		}
 		line = ft_strjoin(line, container);
-		free(container);
+		container = NULL;
 	}
 	return (line);
 }
@@ -59,7 +59,7 @@ int		get_next_line(int fd, char **line)
 	while ((count = read(fd, buff, BUFF_SIZE)) != 0)
 	{
 		buff[count] = '\0';
-		if ((len = ft_strchr(buff, '\n')))
+		if ((len = ft_strrchr(buff, '\n')))
 		{
 			len++;
 			container[fd] = ft_strjoin(container[fd], len);
@@ -73,22 +73,22 @@ int		get_next_line(int fd, char **line)
 	return (0);
 }
 
-int	main(void)
-{
-	int fd = open("text.txt", O_RDONLY);
+// int	main(void)
+// {
+// 	int fd = open("text.txt", O_RDONLY);
 	
-	char *line;
-	int i;
+// 	char *line[10000];
+// 	//int i;
 
-	while ((i = get_next_line(fd, &line)))
-	{
-		printf("i = %d\n%s\n", i, line);
-		//free(line);
-	}
-	printf("i = %d\n%s\n", i, line);
-	//free(line);
-	return (0);
-}
+// // 	while ((i = get_next_line(fd, &line)))
+// // 	{
+// // 		printf("i = %d\n%s\n", i, line);
+// // 		//free(line);
+// // 	}
+// // 	printf("i = %d\n%s\n", i, line);
+// // 	//free(line);
+// // 	return (0);
+// // }
 
 
 

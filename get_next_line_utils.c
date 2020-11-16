@@ -6,71 +6,33 @@
 /*   By: sabra <sabra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 14:36:59 by sabra             #+#    #+#             */
-/*   Updated: 2020/11/15 10:55:55 by sabra            ###   ########.fr       */
+/*   Updated: 2020/11/16 20:05:32 by sabra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*ft_strndup(char *src, int index)
+char	*ft_strrchr(char *str, int c)
 {
-	char	*dest;
-	int 	i;
+	int		i;
+	int		last_index;
+	size_t	len;
 
-	dest = (char *)malloc(sizeof(char) * index);
-	if (dest == NULL)
-		return (0);
+	last_index = -1;
 	i = 0;
-	while (i != index)
-	{
-		dest[i] = src[i];
-		i++;
-	}
-	dest[i] = '\0';
-	return (dest);
-}
-
-char	*ft_substr(char *s, unsigned int start, size_t len)
-{
-	size_t	i;
-	char	*substr;
-
-	if (!s)
-		return (NULL);
-	if (start >= ft_strlen(s))
-	{
-		substr = (char *)malloc(1);
-		substr[0] = '\0';
-		return (substr);
-	}
-	if (!(substr = (char *)malloc((sizeof(char) * (len + 1)))))
-		return (NULL);
-	i = 0;
-	while (len-- && s[start])
-	{
-		substr[i] = s[start];
-		i++;
-		start++;
-	}
-	substr[i] = '\0';
-	return (substr);
-}
-
-char	*ft_strchr(const char *s, int c)
-{
-	size_t		i;
-	char		*str;
-
-	str = (char *)s;
-	i = 0;
-	while (i <= ft_strlen(str))
+	len = ft_strlen(str);
+	while (str[i] != '\0')
 	{
 		if (str[i] == (char)c)
 		{
-			return (&str[i]);
+			last_index = i;
 		}
 		i++;
 	}
+	if (last_index != -1)
+		return (&str[last_index]);
+	else if ((char)c == str[len])
+		return (&str[len]);
 	return (NULL);
 }
 

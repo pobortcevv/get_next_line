@@ -1,4 +1,6 @@
 The project get_next_line is straightforward and leaves very little room for bonuses,
+
+
 but I am sure that you have a lot of imagination. If you aced perfectly the mandatory
 part, then by all means complete this bonus part to go further. I repeat, no bonus will
 be taken into consideration if the mandatory part isn’t perfect.
