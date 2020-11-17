@@ -6,7 +6,7 @@
 /*   By: sabra <sabra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 14:36:59 by sabra             #+#    #+#             */
-/*   Updated: 2020/11/16 20:05:32 by sabra            ###   ########.fr       */
+/*   Updated: 2020/11/17 15:13:36 by sabra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,26 @@ char	*ft_strrchr(char *str, int c)
 		return (&str[len]);
 	return (NULL);
 }
+
+char	*ft_strchr(const char *s, int c)
+{
+	size_t		i;
+	char		*str;
+
+	str = (char *)s;
+	i = 0;
+	while (i <= ft_strlen(str))
+	{
+		if (str[i] == (char)c)
+		{
+			return (&str[i]);
+		}
+		i++;
+	}
+	return (NULL);
+}
+
+#include <stdio.h>
 
 char	*ft_strjoin(char *s1, char *s2)
 {
