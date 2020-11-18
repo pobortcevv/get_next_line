@@ -6,34 +6,40 @@
 /*   By: sabra <sabra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 14:36:59 by sabra             #+#    #+#             */
-/*   Updated: 2020/11/17 15:13:36 by sabra            ###   ########.fr       */
+/*   Updated: 2020/11/18 19:38:39 by sabra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*ft_strrchr(char *str, int c)
+size_t	ft_strlen(const char *str)
 {
-	int		i;
-	int		last_index;
-	size_t	len;
+	size_t	i;
 
-	last_index = -1;
 	i = 0;
-	len = ft_strlen(str);
 	while (str[i] != '\0')
 	{
-		if (str[i] == (char)c)
-		{
-			last_index = i;
-		}
 		i++;
 	}
-	if (last_index != -1)
-		return (&str[last_index]);
-	else if ((char)c == str[len])
-		return (&str[len]);
-	return (NULL);
+	return (i);
+}
+
+char	*ft_strdup(char *src)
+{
+	char 	*dest;
+	int		i;
+
+	dest = (char *)malloc(sizeof(char) * (ft_strlen(src) + 1));
+	if (dest == NULL)
+		return (0);
+	i = 0;
+	while (src[i] != '\0' && src[i] != '\n')
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	dest[i] = '\0';
+	return (dest);
 }
 
 char	*ft_strchr(const char *s, int c)
@@ -54,8 +60,6 @@ char	*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-#include <stdio.h>
-
 char	*ft_strjoin(char *s1, char *s2)
 {
 	char	*result;
@@ -67,8 +71,7 @@ char	*ft_strjoin(char *s1, char *s2)
 		s1 = (char *)malloc(sizeof(char) * 1);
 		s1[0] = '\0';
 	}
-	result = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
-	if (!result)
+	if(!(result = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1))))
 		return (NULL);
 	end_1 = 0;
 	i = 0;
@@ -83,6 +86,7 @@ char	*ft_strjoin(char *s1, char *s2)
 		i++;
 		end_1++;
 	}
+	free(s1);
 	result[end_1] = '\0';
 	return (result);
 }
