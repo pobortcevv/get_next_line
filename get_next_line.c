@@ -6,7 +6,7 @@
 /*   By: sabra <sabra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 19:37:52 by sabra             #+#    #+#             */
-/*   Updated: 2020/11/18 20:00:27 by sabra            ###   ########.fr       */
+/*   Updated: 2020/11/19 14:40:05 by sabra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,16 @@ char	*ft_mod(int fd, char **container)
 {
 	char	*result;
 	int		end_1;
-	int 	i;
+	int		i;
 
 	end_1 = 0;
 	i = 0;
 	result = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	while (container[fd][end_1] != '\n' && container[fd][end_1] != '\0')
-	{
 		end_1++;
-	}
 	if (container[fd][end_1] == '\n')
 		end_1++;
-	while(container[fd][end_1] != '\0')
+	while (container[fd][end_1] != '\0')
 	{
 		result[i] = container[fd][end_1];
 		i++;
@@ -43,55 +41,58 @@ char	*ft_mod(int fd, char **container)
 int		ft_readfile(int fd, char **line, char **container)
 {
 	int		count;
-	char	*mod;
-	int		result;
 
 	while ((count = read(fd, container[fd], BUFFER_SIZE)) > 0)
 	{
 		container[fd][count] = '\0';
-		if ((mod = ft_strchr(container[fd], '\n')))
+		if ((ft_strchr(container[fd], '\n')))
 		{
-			mod++;
-			*line = (!(*line) ? ft_strdup(container[fd]) : ft_strjoin(*line, container[fd]));
-			if(!(*line))
+			*line = (!(*line) ? ft_strdup(container[fd]) :
+			ft_strjoin(*line, container[fd]));
+			if (!(*line))
 				return (-1);
 			container[fd] = ft_mod(fd, container);
 			return (1);
 		}
 		*line = ft_strjoin(*line, container[fd]);
 	}
+	if (count == 0 && !(*line))
+		*line = ft_strdup("\0");
 	return (count == -1 ? (-1) : 0);
+}
+
+int		cont_check(int fd, char **line, char **container)
+{
+	if ((ft_strchr(container[fd], '\n')))
+	{
+		if (!(*line = ft_strdup(container[fd])))
+			return (-1);
+		container[fd] = ft_mod(fd, container);
+		return (1);
+	}
+	else
+	{
+		if (!(*line = ft_strdup(container[fd])))
+			return (-1);
+	}
+	return (2);
 }
 
 int		get_next_line(int fd, char **line)
 {
-	static char 		*container[1000];
-	char				*mod;
+	static char			*container[1000];
 	int					result;
 
-	*line = NULL;
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0 || !line)
 		return (-1);
+	*line = NULL;
 	if (container[fd])
 	{
-		if ((mod = ft_strchr(container[fd], '\n')))
-		{
-			if (!(*line = ft_strdup(container[fd])))
-				return (-1);
-			mod++;
-			container[fd] = ft_mod(fd, container);
-			return (1);
-		}
-		else
-		{
-			if (!(*line = ft_strdup(container[fd])))
-				return (-1);
-		}
+		if ((result = (cont_check(fd, line, container))) < 2)
+			return (result);
 	}
 	else
-	{
 		container[fd] = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	}
 	result = ft_readfile(fd, line, container);
 	if (result < 1)
 	{
@@ -99,41 +100,4 @@ int		get_next_line(int fd, char **line)
 		container[fd] = NULL;
 	}
 	return (result);
-}
-
-int	main(void)
-{
-	int fd = open("text.txt", O_RDONLY);
-	
-	char *line;
-	int i;
-
-	while ((i = get_next_line(fd, &line)) > 0)
-	{
-		printf("i = %d\n%s\n", i, line);
-		free(line);
-	}
-	printf("i = %d\n%s\n", i, line);
-	free(line);
-	return (0);
-
-
-
-
-
-
-
-
-
-
-// 	// printf("1) %d\n", get_next_line(fd, line));
-
-// 	// printf("%s", *line);
-// 	// printf("\n2) %d\n", get_next_line(fd, line));
-// 	// printf("%s", *line);
-// 	// //get_next_line(fd, line);
-// 	// //printf("%s", *line);
-// 	// //get_next_line(fd, line);
-// 	// // printf("%s\n", *line);
-// 	// //get_next_line(fd, line);
 }
